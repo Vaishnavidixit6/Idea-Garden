@@ -1,15 +1,10 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
 import { GoogleGenAI, Type } from '@google/genai';
-import { createServer as createViteServer } from 'vite';
 import { initializeApp as initAdminApp, getApps as getAdminApps } from 'firebase-admin/app';
 import { getAuth as getAdminAuth } from 'firebase-admin/auth';
 import { getFirestore as getAdminFirestore } from 'firebase-admin/firestore';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
@@ -18,7 +13,7 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 app.use(express.json({ limit: '2mb' }));
 
 // Load Firebase configuration
-const configPath = path.resolve(__dirname, 'firebase-applet-config.json');
+const configPath = path.resolve(process.cwd(), 'firebase-applet-config.json');
 let firebaseConfig: any = {};
 try {
   if (fs.existsSync(configPath)) {
@@ -576,6 +571,7 @@ ${JSON.stringify(candidateIdeas, null, 2)}
 // Vite middleware & Production Serving
 async function setupApp() {
   if (process.env.NODE_ENV !== 'production') {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
