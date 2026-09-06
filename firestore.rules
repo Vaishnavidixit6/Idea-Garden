@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // User profile document and subcollections: strictly isolated per authenticated owner
+    match /users/{userId} {
+      allow read, write: if isOwner(userId) && isValidId(userId);
+
+      // Ideas subcollection: completely isolated per user
+      match /ideas/{ideaId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId)
+                      && isValidId(ideaId)
+                      && request.resource.data.userId == request.auth.uid
+                      && request.resource.data.title is string
+                      && request.resource.data.title.size() > 0
+                      && request.resource.data.title.size() <= 300
+                      && request.resource.data.content is string
+                      && request.resource.data.content.size() <= 30000;
+        allow update: if isOwner(userId)
+                      && request.resource.data.userId == request.auth.uid
+                      && request.resource.data.title is string
+                      && request.resource.data.title.size() <= 300
+                      && request.resource.data.content is string
+                      && request.resource.data.content.size() <= 30000;
+        allow delete: if isOwner(userId);
+      }
+
+      // Conversations subcollection: completely isolated per user
+      match /conversations/{conversationId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId)
+                      && isValidId(conversationId)
+                      && request.resource.data.userId == request.auth.uid
+                      && request.resource.data.messages is list;
+        allow update: if isOwner(userId)
+                      && request.resource.data.userId == request.auth.uid
+                      && request.resource.data.messages is list;
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}

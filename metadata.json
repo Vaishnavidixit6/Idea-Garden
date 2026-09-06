@@ -1,0 +1,6 @@
+{
+  "name": "Idea Garden",
+  "description": "A private, authenticated workspace to cultivate ideas, brainstorm with Gemini, discover conceptual connections, and track idea evolution.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

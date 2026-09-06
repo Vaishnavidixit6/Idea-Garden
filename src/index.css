@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: 'Fraunces', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-hand: 'Caveat', cursive, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #FAF6EE;
+    color: #2D2522;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Subtle botanical paper textures and gentle flourishes */
+.font-editorial {
+  font-family: 'Fraunces', Georgia, serif;
+}
+
+.font-body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+.font-handwriting {
+  font-family: 'Caveat', cursive, sans-serif;
+}
+
+/* Organic seed packet notched envelope top styling */
+.seed-packet-edge {
+  position: relative;
+}
+
+.seed-packet-edge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    45deg,
+    #DDD2BD,
+    #DDD2BD 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  opacity: 0.45;
+}
+
+/* Hand-drawn sketch border effect */
+.sketch-border {
+  border-style: solid;
+  border-width: 1.5px;
+  border-color: #DDD3BF;
+  border-radius: 18px 24px 20px 26px / 24px 18px 25px 19px;
+}
+
+/* Botanical notebook ruling effect (subtle) */
+.paper-ruled {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(138, 126, 110, 0.08) 31px,
+    rgba(138, 126, 110, 0.08) 32px
+  );
+}
+
+/* Whimsical leaf & sprout subtle animation */
+@keyframes gentleSway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg) translateY(-1px); }
+}
+
+@keyframes gentlePulse {
+  0%, 100% { opacity: 0.95; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.animate-gentle-sway {
+  animation: gentleSway 5s ease-in-out infinite;
+}
+
+.animate-gentle-pulse {
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+/* Warm botanical scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #F4EFE6;
+}
+::-webkit-scrollbar-thumb {
+  background: #D5CAB7;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B8A992;
+}
